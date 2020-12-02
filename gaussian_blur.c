@@ -4,8 +4,8 @@
 #include<stdlib.h>
 #include<stdbool.h>
 #include<err.h>
-#include<math.h>
-#include "pixeloperations.h"
+//#include<math.h>
+#include "pixel_operations.h"
 
 //need to implement the linear structure for matrices
 // double m[], size_t rows, size_t cols
@@ -20,7 +20,7 @@ double gauss_kernel_d3[9] =    // guauss kernel dim 3 (approximation), calculate
     
     1./16, 1./8, 1./16
 }
-
+;
 /*
 
 double[] FilterCreation()
@@ -63,7 +63,7 @@ void convolute(SDL_Surface* image_surface, double m[], size_t cols){  //intended
     Uint8 r1, g1, b1;
     Uint32 pixel;
     SDL_Surface* image_surface_copy;
-    SDL_BlitSurface(image_surface, NULL, image_surface_copy,NULL)
+    SDL_BlitSurface(image_surface, NULL, image_surface_copy,NULL);
     
     
     for (size_t i = 1; i < height-1; i++)
@@ -76,7 +76,7 @@ void convolute(SDL_Surface* image_surface, double m[], size_t cols){  //intended
                 for (size_t y = -1; i <= 1; y++)
                 {
                     pixel = get_pixel(image_surface_copy,j+y,x+i);
-                    DL_GetRGB(pixel, image_surface_copy->format, &r1, &g1, &b1);
+                    SDL_GetRGB(pixel, image_surface_copy->format, &r1, &g1, &b1);
                     sum += r1 * m[(x+1)*cols + y];
                 }
             }
@@ -86,5 +86,13 @@ void convolute(SDL_Surface* image_surface, double m[], size_t cols){  //intended
     }
     //possibility to crop image, with white contour this won't matter though
 
+
+}
+
+
+int main(){
+
+
+return 0;
 
 }
