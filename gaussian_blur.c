@@ -12,7 +12,7 @@
 
 
 //program to generate Gaussian filter
-double gauss_kernel_d3[] =    // guauss kernel dim 3 (approximation), calculated ahead of time
+double gauss_kernel_d3[9] =    // guauss kernel dim 3 (approximation), calculated ahead of time
 {
     1./16, 1./8, 1./16,
     

@@ -2,7 +2,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "pixel_operations.h"
-#include "gaussianblur.h"
+#include "gaussian_blur.h"
 
 // TODO: Insert all the above functions.
 
