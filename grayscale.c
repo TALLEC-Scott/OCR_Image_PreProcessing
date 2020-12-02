@@ -2,11 +2,17 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "pixel_operations.h"
-#include "gaussian_blur.h"
 
 // TODO: Insert all the above functions.
 
-
+double gauss_kernel_d3[9] =    // guauss kernel dim 3 (approximation), calculated ahead of time
+{
+    1./16, 1./8, 1./16,
+    
+    1./8, 1./4, 1./8,
+    
+    1./16, 1./8, 1./16
+};
 
 void init_sdl()
 {
@@ -96,6 +102,40 @@ void grayscale(SDL_Surface* image_surface)
     }
 }
 
+
+void convolute(SDL_Surface* image_surface, double m[], size_t cols){  //intended for grayscaled image and kernel of dim 3
+    
+    int width = image_surface->w;
+    int height = image_surface->h;
+    double sum;
+    Uint8 r1, g1, b1;
+    Uint32 pixel;
+    SDL_Surface* image_surface_copy;
+    SDL_BlitSurface(image_surface, NULL, image_surface_copy,NULL);
+    
+    
+    for (size_t i = 1; i < height-1; i++)
+    {
+        for (size_t j = 1; j < width-1; j++)
+        {
+            sum = 0;
+            for (size_t x = -1; i <= 1; x++)
+            {
+                for (size_t y = -1; i <= 1; y++)
+                {
+                    pixel = get_pixel(image_surface_copy,j+y,x+i);
+                    SDL_GetRGB(pixel, image_surface_copy->format, &r1, &g1, &b1);
+                    sum += r1 * m[(x+1)*cols + y];
+                }
+            }
+            pixel = SDL_MapRGB(image_surface->format, r1, g1, b1);
+            put_pixel(image_surface,j,i,pixel);
+        }
+    }
+    //possibility to crop image, with white contour this won't matter though
+    
+    
+}
 
 int main()
 {

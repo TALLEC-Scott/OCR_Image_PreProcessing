@@ -19,8 +19,7 @@ double gauss_kernel_d3[9] =    // guauss kernel dim 3 (approximation), calculate
     1./8, 1./4, 1./8,
     
     1./16, 1./8, 1./16
-}
-;
+};
 /*
 
 double[] FilterCreation()
