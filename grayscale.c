@@ -1,7 +1,9 @@
 #include <err.h>
-#include<SDL/SDL.h>
-#include<SDL/SDL_image.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 #include "pixel_operations.h"
+#include "gaussianblur.h"
+
 // TODO: Insert all the above functions.
 
 
@@ -106,12 +108,17 @@ int main()
     image_surface = load_image("my_image.jpg");
     // TODO: Display the image.
     screen_surface = display_image(image_surface);
-
+	
     // TODO: Wait for a key to be pressed.
     wait_for_keypressed();
 
     grayscale(image_surface);
 
+    update_surface(screen_surface,image_surface);
+    wait_for_keypressed();
+    size_t dim = 3;
+
+    convolute(image_surface,gauss_kernel_d3,dim);
     update_surface(screen_surface,image_surface);
     wait_for_keypressed();
 
