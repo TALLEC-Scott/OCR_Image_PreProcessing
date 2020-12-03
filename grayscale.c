@@ -7,11 +7,11 @@
 
 double gauss_kernel_d3[9] =    // guauss kernel dim 3 (approximation), calculated ahead of time
 {
-    1./16, 1./8, 1./16,
+    1./16., 1./8., 1./16.,
     
-    1./8, 1./4, 1./8,
+    1./8., 1./4., 1./8.,
     
-    1./16, 1./8, 1./16
+    1./16., 1./8., 1./16.
 };
 
 void init_sdl()
@@ -103,37 +103,36 @@ void grayscale(SDL_Surface* image_surface)
 }
 
 
-void convolute(SDL_Surface* image_surface, double m[], size_t cols){  //intended for grayscaled image and kernel of dim 3
+void convolute(SDL_Surface* image_surface, double m[], size_t cols){ 
+       	//intended for grayscaled image and kernel of dim 3
     
-    int width = image_surface->w;
-    int height = image_surface->h;
+    size_t width = image_surface->w;
+    size_t height = image_surface->h;
     double sum;
-    Uint8 r1, g1, b1;
+    Uint8 r1=0, g1=0, b1=0;
     Uint32 pixel;
-    SDL_Surface* image_surface_copy;
+    SDL_Surface *image_surface_copy = SDL_CreateRGBSurface(image_surface-> flags, width, height, image_surface->format->BitsPerPixel,image_surface->format->Rmask, image_surface->format->Gmask, image_surface->format->Bmask, image_surface->format->Amask);
     SDL_BlitSurface(image_surface, NULL, image_surface_copy,NULL);
-    
-    
     for (size_t i = 1; i < height-1; i++)
     {
         for (size_t j = 1; j < width-1; j++)
         {
             sum = 0;
-            for (size_t x = -1; i <= 1; x++)
+            for (int x = -1; x <= 1; x++)
             {
-                for (size_t y = -1; i <= 1; y++)
+		   // printf("%ld",x);
+                for (int y = -1; y <= 1; y++)
                 {
-                    pixel = get_pixel(image_surface_copy,j+y,x+i);
+                    pixel = get_pixel(image_surface_copy,y+j,x+i);
                     SDL_GetRGB(pixel, image_surface_copy->format, &r1, &g1, &b1);
-                    sum += r1 * m[(x+1)*cols + y];
+                    sum += (r1 * m[(x+1)*cols + y+1]);
                 }
             }
-            pixel = SDL_MapRGB(image_surface->format, r1, g1, b1);
+	    pixel = SDL_MapRGB(image_surface->format, sum, sum, sum);
             put_pixel(image_surface,j,i,pixel);
         }
     }
     //possibility to crop image, with white contour this won't matter though
-    
     
 }
 
